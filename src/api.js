@@ -12,12 +12,21 @@ export const login = (name, password, cal) => {
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"
             }
         }).then((ret) => {
-            if (ret.data.status !== 1) return console.log(ret.data.info)
+            if (ret.data.status !== 1){
+                return resolve(ret.data)
+            }
             let cookie = ret.headers['set-cookie'][0].split(';')[0]
             global.Verification[name] = cookie
-            cal && cal(cookie)
+            console.log(ret)
+            resolve({
+                status: 1,
+                info:"登录成功"
+            })
         }).catch(err => {
-            reject(err)
+            reject({
+                status: 0,
+                info: err
+            })
         })
     })
 }

@@ -27,13 +27,10 @@ export const sm = ctx => {
         });
 };
 
-export const loginFun = (ctx, next) => {
+export const loginFun = async (ctx, res , next) => {
     const {name,pwd} = ctx.request.body
-    console.log(name,pwd)
-    login(name, pwd, null).then(ret => {
-
-    })
-
+    let ret = await login(name, pwd, null)
+    ctx.body = ret
 }
 
 export const followFun = ctx => {
