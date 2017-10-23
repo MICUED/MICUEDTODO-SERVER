@@ -1,6 +1,6 @@
 // @flow
+import db from './db';
 import JPush from 'jpush-sdk';
-import db from './db'
 
 const pushClient = JPush.buildClient('7f6f6370b15e52876f34b7e0', 'dc2e10b3e0bad4a8654b17ac');
 
@@ -21,24 +21,29 @@ export default ({ message }) =>
           reject(err);
         } else {
           resolve(res);
-          db.query(`insert into push_message (sendno,msg_id,msg_content,create_time) values (${res.sendno},${res.msg_id},${message},NOW())`, (error, results, fields) => {
-            if (error) throw error;
-            console.log('The solution is: ', results[0]);
-          })
-          setTimeout(function () {
-            pushClient.getReportReceiveds(res.msg_id, function (err, res) {
-              console.log(res)
+          db.query(
+            `insert into push_message (sendno,msg_id,msg_content,create_time) values (${res.sendno},${res.msg_id},${message},NOW())`,
+            (error, results, fields) => {
+              if (error) {
+                throw error;
+              }
+              console.log('The solution is: ', results[0]);
+            }
+          );
+          setTimeout(() => {
+            pushClient.getReportReceiveds(res.msg_id, (err, res) => {
+              console.log(res);
               if (err) {
-                console.log(err.message)
+                console.log(err.message);
               } else {
-                for (var i = 0; i < res.length; i++) {
+                for (let i = 0; i < res.length; i++) {
                   // console.log(res[i].android_received)
                   // console.log(res[i].ios_apns_sent)
                   // console.log(res[i].msg_id)
                 }
               }
             });
-          }, 4000)
+          }, 4000);
         }
       });
   });
