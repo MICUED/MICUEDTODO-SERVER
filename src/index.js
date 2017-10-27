@@ -1,6 +1,6 @@
 // @flow
 import { follow, login } from './api';
-import { followFun, index, loginFun, sm } from './controller';
+import { followFun, index, loginFun, sm, busFun } from './controller';
 import bodyparser from 'koa-bodyparser';
 import con from './db';
 import koa from 'koa';
@@ -16,5 +16,6 @@ app.use(route.get('/', index));
 app.use(route.get('/sm', sm));
 app.use(route.post('/login', loginFun));
 app.use(route.get('/follow', followFun));
+app.use(route.get('/bus', busFun));
 
 app.listen(9000);
