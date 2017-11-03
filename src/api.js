@@ -59,6 +59,32 @@ export const bus = cookie =>
             });
     });
 
+//获取自己的统计数据
+export const statistics = cookie =>
+    new Promise((resolve, reject) => {
+        const url = 'http://ued.vemic.com/todo/statistics';
+        axios({
+            url,
+            method: 'post',
+            data: {
+                timePeriod: 'week',
+                per: 20,
+                current: 1,
+            },
+            headers: {
+                Cookie: cookie,
+                'User-Agent':
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36'
+            }
+        })
+            .then(ret => {
+                resolve(ret.data);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+
 //根据 任务id 和 spendtime 更新 todo任务时间变化
 // export const update = (cookie, id, spendTime) => {};
 

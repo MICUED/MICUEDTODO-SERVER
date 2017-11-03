@@ -1,5 +1,5 @@
 // @flow
-import { follow, login ,bus} from './api';
+import { follow, login ,bus,statistics} from './api';
 import push from './push';
 
 export const index = ctx => {
@@ -34,7 +34,14 @@ export const loginFun = async (ctx, res, next) => {
 };
 
 export const busFun = async(ctx) => {
-    const ret  = await bus(global.Verification.yinshuxun);
+    const {userName} = ctx.request.query
+    const ret  = await bus(global.Verification[userName]);
+    ctx.body = ret
+}
+
+export const statisticsFun = async(ctx) => {
+    const {userName} = ctx.request.query
+    const ret  = await statistics(global.Verification[userName]);
     ctx.body = ret
 }
 
